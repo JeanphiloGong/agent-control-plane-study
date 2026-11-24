@@ -26,6 +26,13 @@ Context view 是按 scope 投影给 Agent 的输入，不是数据库所有数�
 | `packages/sync-core/src/types.ts`、`domains/*` | 同步 domain 类型和状态 |
 | `packages/server/src/*` | attachment/activity 持久化和权限查询 |
 
+## 前置、产出与交接
+
+- **前置**：[`02-channel-task`](../02-channel-task/V0-design.md) 的 visibility/evidence ownership 和 [`03-daemon-credentials`](../03-daemon-credentials/V0-design.md) 的 activity boundary。
+- **V1 产出**：一条 evidence receipt 和受 scope 限制的 context view。
+- **下游**：R1 把 evidence、daemon execution 和 Channel/Task 交接为一条协作链路。
+- **冻结条件**：授权 Agent 可以读取 evidence，无 scope Agent 不可见；同步恢复不重复应用，也不扩大权限。
+
 ## 局部版本线
 
 - V1：保存一条 evidence 和 context view。

@@ -40,6 +40,13 @@ PTY bytes / process exit / hook report
 
 `AgentDetection` 是证据结果，不等于最终发布状态。`AgentState` 有 `Idle`、`Working`、`Blocked`、`Unknown` 四个值。`process_exited` 会产生明确的 idle 证据，但检测器不会因此伪造一个仍存活的 Agent。
 
+## 前置、产出与交接
+
+- **前置**：[`01-server-client`](../01-server-client/V0-design.md) 的 server-owned runtime 和事件边界。
+- **V1 产出**：从 PTY 输出、稳定 prompt 和 process exit 生成 `TerminalState` 的 Agent 状态事件。
+- **下游**：[`03-session-persistence`](../03-session-persistence/V0-design.md) 保存 terminal identity、cwd 和 Agent 元数据；客户端只消费状态事件。
+- **冻结条件**：单次空屏不会直接发布 `Idle`，连续确认和进程退出分别满足各自的状态规则。
+
 ## 局部版本线
 
 - **V1**：PTY 输出和进程退出进入 `TerminalState`，支持 `Idle/Working/Unknown`。

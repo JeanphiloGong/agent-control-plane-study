@@ -26,6 +26,13 @@ EventStore 是事实日志，ProjectionStore 是查询模型。事件提交和�
 | `ProjectionStore.ts` | Thread/Run 读模型和游标读取 |
 | `packages/contracts/src/orchestrationV2.ts` | Event、Projection、Run/Thread schema |
 
+## 前置、产出与交接
+
+- **前置**：[`01-orchestrator`](../01-orchestrator/V0-design.md) 的 command receipt 和 run decision。
+- **V1 产出**：一次命令对应的 durable event、projection 和可恢复 cursor。
+- **下游**：[`03-provider-effects`](../03-provider-effects/V0-design.md) 使用 event/outbox 交接外部副作用；客户端只读取 projection。
+- **冻结条件**：重复命令不会重复写入运行事实，断线客户端可以按 cursor 继续读取而不丢事件。
+
 ## 局部版本线
 
 - V1：append event 并读取当前 projection。

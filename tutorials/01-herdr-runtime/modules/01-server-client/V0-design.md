@@ -43,6 +43,13 @@ Stopped
 
 API JSON socket 和 TUI thin-client socket 都以服务端 App 为下游。API 请求失败只返回错误响应；客户端连接错误只结束该连接。`ServerHandle::Drop` 通过 `running` 和 socket identity 清理自己拥有的 API socket，不能删除新进程接管的同名 socket。
 
+## 前置、产出与交接
+
+- **前置**：无。它建立 Herdr 其他模块都依赖的 server-owned runtime 边界。
+- **V1 产出**：`ServerRuntime`、握手后的 `ClientSession`、命令/事件通道，以及客户端断开后的运行时保留。
+- **下游**：[`02-pane-detection`](../02-pane-detection/V0-design.md) 使用运行时事件承接 PTY 和 Agent 状态；[`03-session-persistence`](../03-session-persistence/V0-design.md) 使用服务端拥有的 session 事实。
+- **冻结条件**：一个客户端完成握手并 `Detach` 后，原 pane 仍由服务端持有，第二个客户端可以读取同一 pane。
+
 ## 局部版本线
 
 - **V1**：单机服务端、一个 TUI 客户端、一个 pane 的握手和断开。

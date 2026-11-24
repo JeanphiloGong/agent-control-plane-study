@@ -27,6 +27,13 @@ CoordinatorWorkflow → OperationStore.accept
 | `session-dispatch-watcher.ts` | 观察 Session dispatch/child result |
 | `session/worktree/*` | worktree 分配、路径和 diff/review 边界 |
 
+## 前置、产出与交接
+
+- **前置**：[`02-session`](../02-session/V0-design.md) 的 Session lifecycle 和 worktree ownership。
+- **V1 产出**：一个 parent operation、child item、deadline 和隔离 worktree 的可查询结果。
+- **下游**：[`04-sync-e2ee`](../04-sync-e2ee/V0-design.md) 同步 operation/document identity 和终态 cursor。
+- **冻结条件**：child 超时、机器离线或 worktree 冲突都有明确结果，不能汇总成成功。
+
 ## 局部版本线
 
 - V1：一个 Operation 派发一个 child。

@@ -28,6 +28,13 @@ Provider session 是外部进程生命周期，Run 是服务端事实生命周�
 | `EffectOutbox.ts` | 已提交事实对应的 pending effect |
 | `EffectWorker.ts` | 消费 effect、调用 provider、处理重试和结果回写 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-orchestrator`](../01-orchestrator/V0-design.md) 的 run identity 和 [`02-event-projection`](../02-event-projection/V0-design.md) 的 event/projection contract。
+- **V1 产出**：一个 Provider adapter、事务外 effect 和 result ingress，外部副作用不进入事件事务。
+- **下游**：[`04-workspace-remote`](../04-workspace-remote/V0-design.md) 使用 result ingress 和 effect status 处理 checkpoint、远程和恢复。
+- **冻结条件**：数据库提交失败不会被标记成 Provider 已执行，Provider 结果必须重新进入事件流。
+
 ## 局部版本线
 
 - V1：fake Provider adapter 完成一个 turn。

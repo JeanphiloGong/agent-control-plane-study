@@ -51,6 +51,21 @@ Herdr 同时有两条客户端边界。`src/api/server.rs` 提供本地 JSON API
 
 每个模块的契约和参考架构都在自己的目录中。模块版本不等于产品版本，四个模块达到交接条件后才进入 `H1`。
 
+## 模块依赖
+
+```text
+01 Server / Client / Socket
+  → 02 PTY / Pane / Agent Detection
+  → 03 Session Persistence
+  → 04 Remote Endpoint / Plugin
+  → H1
+```
+
+`01` 先冻结服务端运行时所有权、客户端握手和断开边界。`02` 使用这个运行时接收
+PTY 和进程证据，产生稳定的 Agent 状态。`03` 保存前两个模块拥有的 session 和
+terminal 事实。`04` 最后把 endpoint transport 和插件命令接到已有的客户端边界，
+避免远程或插件直接拥有核心运行时状态。
+
 ## V0 需要保留的不变量
 
 1. **运行时所有权**：PTY、TerminalRuntime 和可恢复的 session 事实由服务端持有。客户端断开不能触发运行时销毁。

@@ -25,6 +25,13 @@ Manager.RunOnce → tryClaim(db clock)
 | `server/internal/scheduler/manager.go` | `Manager.RunOnce`、`runClaimed`、`runHeartbeats`、错误分类 |
 | `server/internal/scheduler/stale_steal_test.go` | `TestStaleStealTerminalUpdateIgnored`，验证旧 lease 终态写入被拒绝 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-issue-invocation`](../01-issue-invocation/V0-design.md) 的 Run identity 和 [`02-runtime-access`](../02-runtime-access/V0-design.md) 的 Runtime start boundary。
+- **V1 产出**：单 worker 的 claim 和 terminal update；后续版本补充 lease token、heartbeat 和 stale steal。
+- **下游**：[`04-failure-review`](../04-failure-review/V0-design.md) 消费 terminal result、lease loss 和 retryable error 分类。
+- **冻结条件**：同一 job 只能被一个 owner claim，失去 lease 的旧 runner 不能写入终态。
+
 ## 局部版本线
 
 - V1：单 worker claim 和 terminal update。

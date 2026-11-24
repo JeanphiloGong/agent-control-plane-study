@@ -29,6 +29,21 @@ AgentIdentity + Workspace membership
 | 03 Daemon / Credentials | 机器 daemon、AgentHost、进程和凭据代理 | [03-daemon-credentials](modules/03-daemon-credentials/V0-design.md) |
 | 04 Memory / Evidence / Sync | Context view、附件、证据收据和实时同步 | [04-memory-evidence-sync](modules/04-memory-evidence-sync/V0-design.md) |
 
+## 模块依赖
+
+```text
+01 Identity / Workspace
+  → 02 Channel / Task
+  → 03 Daemon / Credentials
+  → 04 Memory / Evidence / Sync
+  → R1
+```
+
+`01` 先冻结 Agent、Workspace 和 capability scope。`02` 用这个 scope 决定消息可见性和
+Task claim。`03` 只能为已经授权的 Task 启动机器进程，并通过 scoped credential proxy
+访问 Provider。`04` 读取活动和附件生成 evidence/context 投影，再通过 cursor 同步，
+不能借同步扩大任何权限。
+
 ## 不变量
 
 1. Workspace membership 不等于机器权限，也不等于 Provider secret。

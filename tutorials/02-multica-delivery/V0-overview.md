@@ -30,6 +30,20 @@ IssueService.Create
 | 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) |
 | 04 Failure / Review | 错误分类、重试、唤醒和审核投影 | [04-failure-review](modules/04-failure-review/V0-design.md) |
 
+## 模块依赖
+
+```text
+01 Issue / Invocation
+  → 02 Runtime Access
+  → 03 Scheduler / Lease
+  → 04 Failure / Review
+  → M1
+```
+
+`01` 先决定谁可以请求一次 Run。`02` 再确认 Agent 能使用哪个 Runtime，并把启动
+边界交给调度器。`03` 负责 claim、lease 和终态写入围栏。`04` 只能消费已经分类的
+运行结果，再决定重试、阻塞或审核，不能把 Runtime 不可用误判成 Agent 失败。
+
 ## 不变量
 
 1. Issue 权限、Agent 权限和 Runtime 可用性在执行前分别判断。

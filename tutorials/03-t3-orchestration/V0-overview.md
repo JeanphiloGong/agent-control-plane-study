@@ -28,6 +28,20 @@ RPC command → Orchestrator / CommandPolicy
 | 03 Provider / Effects | Provider adapter、turn 生命周期和事务外副作用 | [03-provider-effects](modules/03-provider-effects/V0-design.md) |
 | 04 Workspace / Remote | Project、Worktree、Checkpoint、RPC 与订阅恢复 | [04-workspace-remote](modules/04-workspace-remote/V0-design.md) |
 
+## 模块依赖
+
+```text
+01 Command / Orchestrator
+  → 02 Event / Projection
+  → 03 Provider / Effects
+  → 04 Workspace / Remote
+  → T1
+```
+
+`01` 产生幂等的命令和运行决策。`02` 把决策写成事实事件和客户端投影。`03` 只能
+通过事件和 outbox 执行 Provider 等外部副作用，并把结果重新送回事件流。`04` 使用
+这些稳定事实实现 checkpoint、回退和断线恢复，不直接读取 Provider 内部状态。
+
 ## 不变量
 
 1. Command Receipt 和幂等键阻止同一命令重复创建 Run。

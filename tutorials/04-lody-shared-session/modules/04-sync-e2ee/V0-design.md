@@ -28,6 +28,13 @@ local session/document mutation
 | `packages/e2ee-core/*` | device key、加密和密钥生命周期 |
 | `packages/loro-streams-rpc/*` | Loro stream、RPC frame 和同步 transport |
 
+## 前置、产出与交接
+
+- **前置**：[`02-session`](../02-session/V0-design.md) 的 document identity 和 [`03-operation-worktree`](../03-operation-worktree/V0-design.md) 的 operation result identity。
+- **V1 产出**：一个受 scope 限制的 document frame、cursor 和离线恢复边界。
+- **下游**：L1 用同步后的父子 Session 状态完成跨机器查询和恢复。
+- **冻结条件**：重连按 cursor 不重复应用，设备密钥和 Provider 凭据不进入同步消息。
+
 ## 局部版本线
 
 - V1：本地 Session document 和 schema。

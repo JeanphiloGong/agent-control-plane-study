@@ -45,6 +45,13 @@ Plugin registry
   → Running → Finished/Failed
 ```
 
+## 前置、产出与交接
+
+- **前置**：[`01-server-client`](../01-server-client/V0-design.md) 的 endpoint/socket 边界和 [`03-session-persistence`](../03-session-persistence/V0-design.md) 的稳定 identity 规则。
+- **V1 产出**：本地 endpoint 与 fake transport 的连接状态、缓存命中和 transport failure 分类。
+- **下游**：H1 使用 endpoint 状态连接已有 server runtime；插件版本再消费 manifest 和 invocation context。
+- **冻结条件**：transport 失败不能伪造 `Online`，插件 manifest 在缺少必需字段或声明未知 action 时不会启动命令。
+
 ## 局部版本线
 
 - **V1**：本地 endpoint 与一个 fake transport 的连接状态。

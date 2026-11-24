@@ -27,6 +27,13 @@ Run result/error → taskfailure classifier
 | `server/internal/service/issue_wakeup_manage.go` | wakeup trigger、check-in 和关闭/删除 |
 | `packages/core/issues/*` | Issue 查询和实时 projection |
 
+## 前置、产出与交接
+
+- **前置**：[`03-scheduler`](../03-scheduler/V0-design.md) 的 terminal result、lease outcome 和 Run 状态。
+- **V1 产出**：一次 Run 的失败分类、retry/review 决策和 Issue projection。
+- **下游**：M1 使用 Issue、Runtime、Scheduler 和 Review Gate 的完整交接，不再把 `Run done` 当成 `shipped`。
+- **冻结条件**：lease 丢失、Runtime 不可用、Agent 失败和需要人工处理的结果保持不同状态。
+
 ## 局部版本线
 
 - V1：Run failure 分类和 Review Gate。

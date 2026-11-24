@@ -44,6 +44,13 @@ process start
 
 快照是可重建 session 的结构事实，不是 PTY 当前屏幕的完整复制。PTY 进程和运行时在恢复阶段重新创建，历史 ANSI 另存并且必须与布局指纹匹配。
 
+## 前置、产出与交接
+
+- **前置**：[`01-server-client`](../01-server-client/V0-design.md) 的运行时所有权和 [`02-pane-detection`](../02-pane-detection/V0-design.md) 的 terminal/Agent 状态字段。
+- **V1 产出**：一个可版本化的 workspace/tab/pane 快照，以及加载、恢复和未知版本拒绝路径。
+- **下游**：[`04-remote-plugins`](../04-remote-plugins/V0-design.md) 使用稳定的 endpoint/session identity；产品集成门 H1 使用恢复后的 pane 继续服务客户端。
+- **冻结条件**：临时目录中的快照恢复布局事实一致，高版本快照拒绝且原文件保持不变。
+
 ## 局部版本线
 
 - **V1**：捕获和恢复一个 workspace/tab/pane/cwd。

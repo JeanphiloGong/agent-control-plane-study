@@ -27,6 +27,13 @@ Daemon 持有机器和进程生命周期，Server 不直接接触机器 secret�
 | `packages/computer/src/*` | machine runtime/连接和本地能力 |
 | `packages/daemon/src/agentCredentialProxy.ts` | credential proxy、scope 和 secret 注入边界 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-identity-workspace`](../01-identity-workspace/V0-design.md) 的 capability scope 和 [`02-channel-task`](../02-channel-task/V0-design.md) 的 Task identity。
+- **V1 产出**：daemon 注册、fake Agent process 生命周期和受 scope 限制的 credential request。
+- **下游**：[`04-memory-evidence-sync`](../04-memory-evidence-sync/V0-design.md) 读取活动摘要和 evidence source。
+- **冻结条件**：无机器 capability 时不能启动 process，Provider secret 不进入 Server message、Thread 或 Agent context。
+
 ## 局部版本线
 
 - V1：daemon 注册并启动一个 fake Agent process。

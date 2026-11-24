@@ -27,6 +27,20 @@ Machine → ACP runner/client → SessionManager/ExecutionService
 | 03 Operation / Worktree | 跨会话派发、截止时间和隔离目录 | [03-operation-worktree](modules/03-operation-worktree/V0-design.md) |
 | 04 Sync / E2EE | Session 文档、同步帧、设备密钥和离线边界 | [04-sync-e2ee](modules/04-sync-e2ee/V0-design.md) |
 
+## 模块依赖
+
+```text
+01 ACP Runtime
+  → 02 Session
+  → 03 Operation / Worktree
+  → 04 Sync / E2EE
+  → L1
+```
+
+`01` 先建立机器上的 ACP 进程和统一事件边界。`02` 拥有 Session 生命周期，不能把
+Provider 进程状态当成 Session 状态。`03` 使用 Session 派发 child operation，并为每个
+Session 分配工作树。`04` 最后同步文档和游标，不能绕过 Session 或 Operation 的权限。
+
 ## 不变量
 
 1. ACP provider 细节由 AgentClient/adapter 隔离，Session 上层只消费统一事件。

@@ -25,6 +25,13 @@ Runtime 是可被 Agent 使用的宿主，不是 Agent 本身。`RuntimeAllowsUs
 | `server/internal/service/agent_ready.go` | `AgentReadiness` 读取 Runtime 状态并生成 verdict |
 | `server/internal/runtimeapps/*` | Runtime app/runner adapter 的外部执行边界 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-issue-invocation`](../01-issue-invocation/V0-design.md) 的成员/Agent 授权和 Run 请求。
+- **V1 产出**：Runtime ownership、可用性和 runner start boundary 的统一 verdict。
+- **下游**：[`03-scheduler`](../03-scheduler/V0-design.md) 只调度已经通过 access/readiness 的 Run；失败结果进入后续分类。
+- **冻结条件**：越权或离线 Runtime 只返回拒绝，不创建进程，也不改变 Issue 的成功状态。
+
 ## 局部版本线
 
 - V1：查询一个 Runtime 并判断可用性。

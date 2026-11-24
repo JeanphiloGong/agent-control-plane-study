@@ -26,6 +26,13 @@ Session 是长期可查询的会话事实，turn 是其中一次执行。`Sessio
 | `session-execution-service.ts` | `SessionExecutionService`、turn dispatch、cancel/finalization |
 | `commands/session.ts` | CLI/API session 命令入口 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-acp-runtime`](../01-acp-runtime/V0-design.md) 的 Machine、ACP process 和统一 event boundary。
+- **V1 产出**：Session create/run/steer/cancel/archive/resume 的显式状态流。
+- **下游**：[`03-operation-worktree`](../03-operation-worktree/V0-design.md) 派发 child operation，并为每个 Session 绑定独立 worktree。
+- **冻结条件**：Session 状态和 Agent process 状态分别保存，cancel 或 offline 不伪造 completed。
+
 ## 局部版本线
 
 - V1：create/start/read 一个 Session。

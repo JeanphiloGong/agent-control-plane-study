@@ -25,6 +25,13 @@ Agent 是长期参与者，不是某次 Task 的临时 worker。Workspace member
 | `packages/shared` | Agent/Workspace 协议、schema 和跨端类型 |
 | `packages/raft-sdk` | 人和 Agent 使用的 SDK 边界 |
 
+## 前置、产出与交接
+
+- **前置**：无。它定义 Raft 其他模块使用的身份、workspace 和 capability scope。
+- **V1 产出**：创建 Agent、绑定 workspace/机器并读取 presence 的持久事实。
+- **下游**：[`02-channel-task`](../02-channel-task/V0-design.md) 用 scope 判断消息可见性和 Task claim。
+- **冻结条件**：Workspace membership、machine capability 和 Provider secret scope 分别判断。
+
 ## 局部版本线
 
 - V1：创建 Agent、加入 Workspace、读取 capability。

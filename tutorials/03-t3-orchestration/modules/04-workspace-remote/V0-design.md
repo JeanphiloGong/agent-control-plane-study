@@ -31,6 +31,13 @@ Worktree 是文件系统边界，Checkpoint 是可回退事实。远程客户端
 | `ThreadStream.ts` | Thread 事件 stream、游标和重连 |
 | `packages/client-runtime/*` | 客户端 runtime projection/transport |
 
+## 前置、产出与交接
+
+- **前置**：[`02-event-projection`](../02-event-projection/V0-design.md) 的客户端读取模型和 [`03-provider-effects`](../03-provider-effects/V0-design.md) 的 effect/result boundary。
+- **V1 产出**：一个 Project/Worktree checkpoint 和断线后可恢复的订阅读取路径。
+- **下游**：T1 追踪一个 Provider Turn 从命令、事件、投影到 workspace/effect 结果的完整链路。
+- **冻结条件**：checkpoint 回退失败留下事实，远程断线不会把客户端本地状态当成服务端事实。
+
 ## 局部版本线
 
 - V1：一个 Project/TaskFolder 和 checkpoint。

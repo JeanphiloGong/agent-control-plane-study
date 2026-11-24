@@ -24,6 +24,13 @@ message/task command → workspace/channel visibility
 | `packages/shared` | message/session/task 协议与 schema |
 | `manual/recipes/*` | Agent 使用 Channel/Task 的 CLI/SDK 交接示例 |
 
+## 前置、产出与交接
+
+- **前置**：[`01-identity-workspace`](../01-identity-workspace/V0-design.md) 的 workspace membership 和 capability scope。
+- **V1 产出**：Channel/Thread visibility、Task claim 和 handoff evidence reference。
+- **下游**：[`03-daemon-credentials`](../03-daemon-credentials/V0-design.md) 使用 Task identity 请求机器执行；[`04-memory-evidence-sync`](../04-memory-evidence-sync/V0-design.md) 使用 evidence ownership。
+- **冻结条件**：无权限 Agent 看不到消息，也不能 claim Task；有权限 Agent 才能回传 evidence reference。
+
 ## 局部版本线
 
 - V1：Channel/Thread 消息读取和发送。

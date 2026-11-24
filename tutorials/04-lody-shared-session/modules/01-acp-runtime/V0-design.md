@@ -25,6 +25,13 @@ Machine config → acp-runner → managed-agent-runtime
 | `managed-agent-runtime.ts` | `ManagedRuntime*` 类型、安装、版本和失败分类 |
 | `agent-client.ts` | `AgentClient`、transport retry、ACP error 和 session notification |
 
+## 前置、产出与交接
+
+- **前置**：无。它定义机器到 ACP 进程的最小运行时边界。
+- **V1 产出**：一个 fake 或本地 ACP process 的启动、事件归一化和结束状态。
+- **下游**：[`02-session`](../02-session/V0-design.md) 使用统一 Agent event 管理 Session 生命周期。
+- **冻结条件**：Provider 进程退出会产生明确事件，Session 上层不会把连接断开伪造成任务完成。
+
 ## 局部版本线
 
 - V1：fake ACP process 启动一个 Session。

@@ -27,6 +27,13 @@ client command → CommandPolicyV2
 | `ThreadCommandExecutor.ts` | `ThreadCommandExecutor` 和命令串行化 |
 | `packages/contracts/src/orchestrationV2.ts` | command、run、thread、receipt 的 wire schema |
 
+## 前置、产出与交接
+
+- **前置**：无。它定义客户端命令进入控制面的唯一决策入口。
+- **V1 产出**：一个带幂等 receipt 的 command decision，以及线程/run 的启动、steer、fork 或拒绝结果。
+- **下游**：[`02-event-projection`](../02-event-projection/V0-design.md) 持久化 decision event 和 projection；Provider 不直接读取命令请求。
+- **冻结条件**：相同幂等键不会重复创建 Run，拒绝命令不会产生 Provider 或 workspace 副作用。
+
 ## 局部版本线
 
 - V1：一个 Thread 启动一个 Run。
