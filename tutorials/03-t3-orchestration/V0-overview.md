@@ -23,10 +23,10 @@ RPC command → Orchestrator / CommandPolicy
 
 | 模块 | 责任 | V0 |
 | --- | --- | --- |
-| Command / Orchestrator | 命令判定、幂等和线程运行决策 | [orchestrator](modules/orchestrator/V0-design.md) |
-| Event / Projection | 事实事件、投影、游标和重放 | [event-projection](modules/event-projection/V0-design.md) |
-| Provider / Effects | Provider adapter、turn 生命周期和事务外副作用 | [provider-effects](modules/provider-effects/V0-design.md) |
-| Workspace / Remote | Project、Worktree、Checkpoint、RPC 与订阅恢复 | [workspace-remote](modules/workspace-remote/V0-design.md) |
+| 01 Command / Orchestrator | 命令判定、幂等和线程运行决策 | [01-orchestrator](modules/01-orchestrator/V0-design.md) |
+| 02 Event / Projection | 事实事件、投影、游标和重放 | [02-event-projection](modules/02-event-projection/V0-design.md) |
+| 03 Provider / Effects | Provider adapter、turn 生命周期和事务外副作用 | [03-provider-effects](modules/03-provider-effects/V0-design.md) |
+| 04 Workspace / Remote | Project、Worktree、Checkpoint、RPC 与订阅恢复 | [04-workspace-remote](modules/04-workspace-remote/V0-design.md) |
 
 ## 不变量
 

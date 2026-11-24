@@ -25,10 +25,10 @@ IssueService.Create
 
 | 模块 | 责任 | V0 |
 | --- | --- | --- |
-| Issue / Invocation | Issue 创建、Agent 调用授权和 Run 请求 | [issue-invocation](modules/issue-invocation/V0-design.md) |
-| Runtime Access | Agent Runtime 查找、可用性和 Runner 适配 | [runtime-access](modules/runtime-access/V0-design.md) |
-| Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [scheduler](modules/scheduler/V0-design.md) |
-| Failure / Review | 错误分类、重试、唤醒和审核投影 | [failure-review](modules/failure-review/V0-design.md) |
+| 01 Issue / Invocation | Issue 创建、Agent 调用授权和 Run 请求 | [01-issue-invocation](modules/01-issue-invocation/V0-design.md) |
+| 02 Runtime Access | Agent Runtime 查找、可用性和 Runner 适配 | [02-runtime-access](modules/02-runtime-access/V0-design.md) |
+| 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) |
+| 04 Failure / Review | 错误分类、重试、唤醒和审核投影 | [04-failure-review](modules/04-failure-review/V0-design.md) |
 
 ## 不变量
 

@@ -44,10 +44,10 @@ Herdr 同时有两条客户端边界。`src/api/server.rs` 提供本地 JSON API
 
 | 模块 | 负责的问题 | V0 文档 |
 | --- | --- | --- |
-| Server / Client / Socket | 服务端所有权、握手、命令、事件和断开 | [server-client](modules/server-client/V0-design.md) |
-| PTY / Pane / Agent Detection | PTY 输出如何变成可解释的 Agent 状态 | [pane-detection](modules/pane-detection/V0-design.md) |
-| Session Persistence | workspace 布局、pane 启动信息和恢复副本如何保存 | [session-persistence](modules/session-persistence/V0-design.md) |
-| Remote Endpoint / Plugin | SSH endpoint 和插件能力如何经过边界进入运行时 | [remote-plugins](modules/remote-plugins/V0-design.md) |
+| 01 Server / Client / Socket | 服务端所有权、握手、命令、事件和断开 | [01-server-client](modules/01-server-client/V0-design.md) |
+| 02 PTY / Pane / Agent Detection | PTY 输出如何变成可解释的 Agent 状态 | [02-pane-detection](modules/02-pane-detection/V0-design.md) |
+| 03 Session Persistence | workspace 布局、pane 启动信息和恢复副本如何保存 | [03-session-persistence](modules/03-session-persistence/V0-design.md) |
+| 04 Remote Endpoint / Plugin | SSH endpoint 和插件能力如何经过边界进入运行时 | [04-remote-plugins](modules/04-remote-plugins/V0-design.md) |
 
 每个模块的契约和参考架构都在自己的目录中。模块版本不等于产品版本，四个模块达到交接条件后才进入 `H1`。
 

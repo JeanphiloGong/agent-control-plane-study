@@ -5,6 +5,10 @@
 
 公共教程规划见 [plan.md](plan.md)。
 
+统一教程入口见 [tutorials/README.md](tutorials/README.md)。目录编号表示推荐学习顺序，
+产品目录内的模块编号表示该产品内部的学习顺序。`V0`、`V1` 等仍然是模块自己的版本，
+不是五个产品共享的全局版本。
+
 ## V0 教程入口
 
 五条教程线的产品总览和模块 V0 设计已经初始化完成。每个产品下面有四个模块，
@@ -12,11 +16,11 @@
 
 | 产品 | 总览 |
 | --- | --- |
-| Herdr | [tutorials/herdr/V0-overview.md](tutorials/herdr/V0-overview.md) |
-| Multica | [tutorials/multica/V0-overview.md](tutorials/multica/V0-overview.md) |
-| T3 Code | [tutorials/t3-code/V0-overview.md](tutorials/t3-code/V0-overview.md) |
-| Lody | [tutorials/lody/V0-overview.md](tutorials/lody/V0-overview.md) |
-| Raft | [tutorials/raft/V0-overview.md](tutorials/raft/V0-overview.md) |
+| 01 Herdr | [tutorials/01-herdr-runtime/V0-overview.md](tutorials/01-herdr-runtime/V0-overview.md) |
+| 02 Multica | [tutorials/02-multica-delivery/V0-overview.md](tutorials/02-multica-delivery/V0-overview.md) |
+| 03 T3 Code | [tutorials/03-t3-orchestration/V0-overview.md](tutorials/03-t3-orchestration/V0-overview.md) |
+| 04 Lody | [tutorials/04-lody-shared-session/V0-overview.md](tutorials/04-lody-shared-session/V0-overview.md) |
+| 05 Raft | [tutorials/05-raft-collaboration/V0-overview.md](tutorials/05-raft-collaboration/V0-overview.md) |
 
 ## 源码位置
 
@@ -33,4 +37,5 @@
 Git 服务端支持时，未需要的历史文件内容按需获取。
 
 后续 V1 从一个模块的可运行参考实现开始。建议先选择
-`herdr-server-client/V1` 或 `multica-scheduler/V1`，完成后再进入对应产品集成门。
+`01-herdr-runtime/modules/01-server-client/V1` 或
+`02-multica-delivery/modules/03-scheduler/V1`，完成后再进入对应产品集成门。

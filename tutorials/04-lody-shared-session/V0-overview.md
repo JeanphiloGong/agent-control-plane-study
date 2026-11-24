@@ -22,10 +22,10 @@ Machine → ACP runner/client → SessionManager/ExecutionService
 
 | 模块 | 责任 | V0 |
 | --- | --- | --- |
-| ACP Runtime | 机器上的 Agent 进程和 ACP capability | [acp-runtime](modules/acp-runtime/V0-design.md) |
-| Session | 会话创建、执行、控制和恢复 | [session](modules/session/V0-design.md) |
-| Operation / Worktree | 跨会话派发、截止时间和隔离目录 | [operation-worktree](modules/operation-worktree/V0-design.md) |
-| Sync / E2EE | Session 文档、同步帧、设备密钥和离线边界 | [sync-e2ee](modules/sync-e2ee/V0-design.md) |
+| 01 ACP Runtime | 机器上的 Agent 进程和 ACP capability | [01-acp-runtime](modules/01-acp-runtime/V0-design.md) |
+| 02 Session | 会话创建、执行、控制和恢复 | [02-session](modules/02-session/V0-design.md) |
+| 03 Operation / Worktree | 跨会话派发、截止时间和隔离目录 | [03-operation-worktree](modules/03-operation-worktree/V0-design.md) |
+| 04 Sync / E2EE | Session 文档、同步帧、设备密钥和离线边界 | [04-sync-e2ee](modules/04-sync-e2ee/V0-design.md) |
 
 ## 不变量
 

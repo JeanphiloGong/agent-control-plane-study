@@ -24,10 +24,10 @@ AgentIdentity + Workspace membership
 
 | 模块 | 责任 | V0 |
 | --- | --- | --- |
-| Identity / Workspace | Agent 身份、机器绑定、presence 和能力范围 | [identity-workspace](modules/identity-workspace/V0-design.md) |
-| Channel / Task | 消息、Thread、Task 和可见性交接 | [channel-task](modules/channel-task/V0-design.md) |
-| Daemon / Credentials | 机器 daemon、AgentHost、进程和凭据代理 | [daemon-credentials](modules/daemon-credentials/V0-design.md) |
-| Memory / Evidence / Sync | Context view、附件、证据收据和实时同步 | [memory-evidence-sync](modules/memory-evidence-sync/V0-design.md) |
+| 01 Identity / Workspace | Agent 身份、机器绑定、presence 和能力范围 | [01-identity-workspace](modules/01-identity-workspace/V0-design.md) |
+| 02 Channel / Task | 消息、Thread、Task 和可见性交接 | [02-channel-task](modules/02-channel-task/V0-design.md) |
+| 03 Daemon / Credentials | 机器 daemon、AgentHost、进程和凭据代理 | [03-daemon-credentials](modules/03-daemon-credentials/V0-design.md) |
+| 04 Memory / Evidence / Sync | Context view、附件、证据收据和实时同步 | [04-memory-evidence-sync](modules/04-memory-evidence-sync/V0-design.md) |
 
 ## 不变量
 

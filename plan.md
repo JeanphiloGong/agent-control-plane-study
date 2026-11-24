@@ -134,9 +134,9 @@ Raft V0 的参考实现骨架应包含 `Workspace`、`AgentIdentity`、`Capabili
 同一个 `V0-design.md`，源码说明和参考实现也能保持一一对应：
 
 ```text
-tutorials/<product>/
+tutorials/<numbered-product>/
   V0-overview.md
-  modules/<module>/
+  modules/<numbered-module>/
     V0-design.md
     contracts/
       domain-flow.md
@@ -145,6 +145,7 @@ tutorials/<product>/
     reference-architecture.md
 ```
 
+产品目录编号表示推荐学习顺序，模块目录编号表示产品内部的推荐学习顺序。
 `V0-overview.md` 只讲产品场景、模块关系、端到端数据流和第一个产品集成门。
 模块自己的 `V0-design.md` 讲该模块的完整业务流程、边界和后续版本。`contracts/`
 记录真实消费者需要遵守的状态、输入、输出、错误和副作用契约。
