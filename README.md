@@ -16,7 +16,7 @@
 
 | 产品 | 总览 |
 | --- | --- |
-| 01 Herdr | [tutorials/01-herdr-runtime/V0-overview.md](tutorials/01-herdr-runtime/V0-overview.md) |
+| 01 Herdr | [tutorials/01-herdr-runtime/plan.md](tutorials/01-herdr-runtime/plan.md) |
 | 02 Multica | [tutorials/02-multica-delivery/V0-overview.md](tutorials/02-multica-delivery/V0-overview.md) |
 | 03 T3 Code | [tutorials/03-t3-orchestration/V0-overview.md](tutorials/03-t3-orchestration/V0-overview.md) |
 | 04 Lody | [tutorials/04-lody-shared-session/V0-overview.md](tutorials/04-lody-shared-session/V0-overview.md) |
@@ -36,6 +36,5 @@
 克隆参数为 `--depth=1 --filter=blob:none`：取得当前提交的完整工作树，历史较浅；
 Git 服务端支持时，未需要的历史文件内容按需获取。
 
-后续 V1 从一个模块的可运行参考实现开始。建议先选择
-`01-herdr-runtime/modules/01-server-client/V1` 或
-`02-multica-delivery/modules/03-scheduler/V1`，完成后再进入对应产品集成门。
+第一条实现路线从 Herdr 的服务端与客户端开始。
+[Herdr Server / Client v1–v4](tutorials/01-herdr-runtime/modules/01-server-client/plan.md)

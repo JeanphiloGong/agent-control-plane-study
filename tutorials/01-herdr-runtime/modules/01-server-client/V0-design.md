@@ -52,13 +52,13 @@ API JSON socket 和 TUI thin-client socket 都以服务端 App 为下游。API �
 
 ## 局部版本线
 
-- **V1**：单机服务端、一个 TUI 客户端、一个 pane 的握手和断开。
-- **V2**：API JSON request 与事件订阅，补充 request id、连接超时和错误响应。
-- **V3**：多个 thin client、输出队列背压和客户端隔离。
-- **V4**：live handoff、远程 endpoint 和重连恢复。
+- **v1**：进程内的握手和断开，服务端保留 pane。
+- **v2**：本地 Unix socket 上的 JSON 请求、事件订阅、超时和错误响应。
+- **v3**：多个 thin client 共享运行时，单条连接过载时隔离其发送队列。
+- **v4**：同一进程内的运行时接管，客户端通过原 socket 重连。远程 endpoint 由 [04 Remote Endpoint / Plugin](../04-remote-plugins/V0-design.md) 承接。
 
 ## V1 检查
 
-在参考实现中创建一个服务端和 pane，客户端完成握手后发送 `Detach`。断言服务端仍有同一个 pane 和运行时句柄，再连接第二个客户端读取同一服务端状态。测试不能只断言 socket 返回 `Welcome`，还要断言客户端生命周期没有销毁运行时。
+在进程内创建一个服务端和 pane，客户端完成握手后发送 `Detach`。断言服务端仍持有原 pane，第二个客户端通过同一个运行时读取同一条记录。
 
-契约见 [domain-flow](contracts/domain-flow.md)、[state-and-errors](contracts/state-and-errors.md)、[interface-or-storage](contracts/interface-or-storage.md)，参考实现见 [reference-architecture](reference-architecture.md)。
+契约见 [领域流](contracts/domain-flow.md)、[状态和错误](contracts/state-and-errors.md)、[接口契约](contracts/interface-or-storage.md)。各版计划与正文入口见 [模块路线图](plan.md)。

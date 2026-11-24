@@ -351,12 +351,8 @@ API、Realtime、持久化和集成；Daemon 在机器上运行 Agent 并代理�
 基线提交，验收包含源码符号、数据流、错误边界和参考架构静态检查，不把设计文档
 当成可运行产品。
 
-下一步进入模块版本，而不是直接跳到产品级 V2：
-
-1. 先选择一个模块 V1，建议从 `herdr-server-client/V1` 或 `multica-scheduler/V1` 开始；
-2. 在对应模块 V0 的参考架构上写实际学习代码和逐步检查；
-3. 模块 V1 通过后，再用对应产品集成门验证跨模块交接；
-4. 之后按 Herdr → Multica → T3 Code → Lody → Raft 的顺序推进其余模块。
+第一篇实现正文从 Herdr 的连接生命周期开始。后续模块沿用各自的 V0 契约，在达到集成条件后验证跨模块交接。
+[Herdr 路线图](tutorials/01-herdr-runtime/plan.md)
 
 ## 当前明确不包含
 
