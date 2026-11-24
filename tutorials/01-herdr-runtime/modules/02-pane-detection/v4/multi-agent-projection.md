@@ -1,6 +1,6 @@
 # Herdr Pane Detection v4：把多个 Agent 状态投影给客户端
 
-[上一版 v3](../v3/idle-stabilization.md) · [本版计划](plan.md) · [Herdr 路线图](../../plan.md)
+[上一版 v3](../v3/idle-stabilization.md) · [本版计划](plan.md) · [Herdr 路线图](../../../plan.md)
 
 多个 Agent 不能共享一个全局 manifest。v4 为每个名称保存独立规则和状态，只投影真正发生变化的事件。
 
