@@ -23,12 +23,12 @@ IssueService.Create
 
 ## 模块
 
-| 模块 | 责任 | V0 |
-| --- | --- | --- |
-| 01 Issue / Invocation | Issue 创建、Agent 调用授权和 Run 请求 | [01-issue-invocation](modules/01-issue-invocation/V0-design.md) |
-| 02 Runtime Access | Agent Runtime 查找、可用性和 Runner 适配 | [02-runtime-access](modules/02-runtime-access/V0-design.md) |
-| 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) |
-| 04 Failure / Review | 错误分类、重试、唤醒和审核投影 | [04-failure-review](modules/04-failure-review/V0-design.md) |
+| 模块 | 责任 | V0 | 实现路线 |
+| --- | --- | --- | --- |
+| 01 Issue / Invocation | Issue 创建、Agent 调用授权和 Run 请求 | [01-issue-invocation](modules/01-issue-invocation/V0-design.md) | [v1–v3](modules/01-issue-invocation/plan.md) |
+| 02 Runtime Access | Agent Runtime 查找、可用性和 Runner 适配 | [02-runtime-access](modules/02-runtime-access/V0-design.md) | 待构建 |
+| 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) | 待构建 |
+| 04 Failure / Review | 错误分类、重试、唤醒和审核投影 | [04-failure-review](modules/04-failure-review/V0-design.md) | 待构建 |
 
 ## 模块依赖
 
@@ -41,7 +41,8 @@ IssueService.Create
 ```
 
 `01` 先决定谁可以请求一次 Run。`02` 再确认 Agent 能使用哪个 Runtime，并把启动
-边界交给调度器。`03` 负责 claim、lease 和终态写入围栏。`04` 只能消费已经分类的
+边界交给调度器。普通 offline Runtime 可以留下可等待的 Run，缺少 Runtime 或不可修复
+状态必须在执行前拒绝。`03` 负责 claim、lease 和终态写入围栏。`04` 只能消费已经分类的
 运行结果，再决定重试、阻塞或审核，不能把 Runtime 不可用误判成 Agent 失败。
 
 ## 不变量

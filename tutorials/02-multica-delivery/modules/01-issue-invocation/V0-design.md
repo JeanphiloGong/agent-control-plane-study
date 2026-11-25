@@ -1,5 +1,7 @@
 # Multica Issue / Agent Invocation V0
 
+[模块路线图](plan.md)
+
 ## 版本与范围
 
 - **源码**：`sources/multica` @ `4ceffd536603c67620c7460f6c412dcbf092299e`
@@ -34,7 +36,7 @@ Issue 是用户要求交付的事实。Agent 是被授权的执行主体，Runti
 - **前置**：无。它定义一次 Issue invocation 的授权入口和 Run identity。
 - **V1 产出**：有权限且 Runtime ready 时生成 `RunRequest`，拒绝路径不启动任何外部进程。
 - **下游**：[`02-runtime-access`](../02-runtime-access/V0-design.md) 读取授权结果和 Runtime 请求，[`03-scheduler`](../03-scheduler/V0-design.md) 使用 Run identity 进行 claim。
-- **冻结条件**：无权限 Agent、缺少 Runtime 或离线 Runtime 都只产生明确拒绝，不产生启动副作用。
+- **冻结条件**：无权限 Agent、缺少 Runtime 或不可修复的 Runtime 状态产生明确拒绝；普通离线 Runtime 进入可等待队列，不启动外部进程，等 Runtime 恢复后再执行。
 
 ## 局部版本线
 
