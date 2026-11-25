@@ -1,5 +1,7 @@
 # Multica Runtime Access V0
 
+[模块路线图](plan.md)
+
 ## 版本与范围
 
 - **源码**：`server/internal/service/runtime_access.go`、`agent_runtime_lookup.go`、`server/internal/runtimeapps/*`
@@ -30,7 +32,7 @@ Runtime 是可被 Agent 使用的宿主，不是 Agent 本身。`RuntimeAllowsUs
 - **前置**：[`01-issue-invocation`](../01-issue-invocation/V0-design.md) 的成员/Agent 授权和 Run 请求。
 - **V1 产出**：Runtime ownership、可用性和 runner start boundary 的统一 verdict。
 - **下游**：[`03-scheduler`](../03-scheduler/V0-design.md) 只调度已经通过 access/readiness 的 Run；失败结果进入后续分类。
-- **冻结条件**：越权或离线 Runtime 只返回拒绝，不创建进程，也不改变 Issue 的成功状态。
+- **冻结条件**：越权、缺失或不可修复 Runtime 只返回拒绝，不创建进程；普通离线 Runtime 返回可等待 verdict，不创建进程，Issue 仍保持未完成。
 
 ## 局部版本线
 
