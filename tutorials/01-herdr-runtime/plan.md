@@ -9,7 +9,7 @@
 | 01 Server / Client / Socket | [V0](modules/01-server-client/V0-design.md) | [v1–v4 路线图](modules/01-server-client/plan.md) | 握手、Unix API、客户端隔离和接管 |
 | 02 PTY / Pane / Agent Detection | [V0](modules/02-pane-detection/V0-design.md) | [v1–v4 路线图](modules/02-pane-detection/plan.md) | PTY 证据和稳定 Agent 状态 |
 | 03 Session Persistence | [V0](modules/03-session-persistence/V0-design.md) | [v1–v4 路线图](modules/03-session-persistence/plan.md) | 快照、恢复、history 和 Agent resume |
-| 04 Remote Endpoint / Plugin | [V0](modules/04-remote-plugins/V0-design.md) | v1 待构建 | endpoint transport 和插件边界 |
+| 04 Remote Endpoint / Plugin | [V0](modules/04-remote-plugins/V0-design.md) | [v1–v4 路线图](modules/04-remote-plugins/plan.md) | endpoint transport 和插件边界 |
 
 模块按照 `01 → 02 → 03 → 04` 交接。每个模块有自己的 v1-vn，不把产品级 H1 当成某个模块的 v1。
 
