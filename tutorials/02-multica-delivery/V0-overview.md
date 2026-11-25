@@ -9,16 +9,16 @@
 
 ## 真实场景
 
-用户创建一个 Issue 并指定 Agent。服务端检查成员是否可以调用该 Agent，再检查 Agent 绑定的 Runtime 是否可用。调度器用数据库时间领取 Run，持有者定期 heartbeat，失去 lease 的旧 runner 不能写入终态。Run 完成后仍要经过 Review Gate，不能把执行成功直接当成已经交付。
+用户创建一个 Issue 并指定 Agent。服务端检查成员的调用权限和 Agent 绑定的 Runtime。后台另有系统任务调度器，按数据库时间领取到期计划，例如周期性检查到期的 Issue 唤醒。运行结果随后由 Agent Run 所在的流程处理，交付仍需经过 Review Gate。
 
 ```text
 IssueService.Create
   → CanMemberInvokeAgent / AgentReadiness
-  → Scheduler.tryClaim
-  → runClaimed + heartbeat
-  → finishSuccess / finishFailure
-  → FailureClassifier / RetryPolicy
-  → ReviewGate / Issue projection
+  → Agent Run → FailureClassifier / RetryPolicy → ReviewGate / Issue projection
+
+Manager.RunOnce → tryClaim → runClaimed + heartbeat
+  ├─ issue_wakeup_dispatch → IssueWakeupService.Tick
+  └─ finishSuccess / finishFailure → sys_cron_executions
 ```
 
 ## 模块
@@ -27,7 +27,7 @@ IssueService.Create
 | --- | --- | --- | --- |
 | 01 Issue / Invocation | Issue 创建、Agent 调用授权和 Run 请求 | [01-issue-invocation](modules/01-issue-invocation/V0-design.md) | [v1–v3](modules/01-issue-invocation/plan.md) |
 | 02 Runtime Access | Agent Runtime 查找、可用性和 Runner 适配 | [02-runtime-access](modules/02-runtime-access/V0-design.md) | [v1–v3](modules/02-runtime-access/plan.md) |
-| 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) | 待构建 |
+| 03 Scheduler / Lease | claim、数据库时钟、heartbeat、stale steal | [03-scheduler](modules/03-scheduler/V0-design.md) | [v1–v3](modules/03-scheduler/plan.md) |
 | 04 Failure / Review | 错误分类、重试、唤醒和审核投影 | [04-failure-review](modules/04-failure-review/V0-design.md) | 待构建 |
 
 ## 模块依赖
@@ -40,10 +40,10 @@ IssueService.Create
   → M1
 ```
 
-`01` 先决定谁可以请求一次 Run。`02` 再确认 Agent 能使用哪个 Runtime，并把启动
-边界交给调度器。普通 offline Runtime 可以留下可等待的 Run，缺少 Runtime 或不可修复
-状态必须在执行前拒绝。`03` 负责 claim、lease 和终态写入围栏。`04` 只能消费已经分类的
-运行结果，再决定重试、阻塞或审核，不能把 Runtime 不可用误判成 Agent 失败。
+`01` 先决定谁可以请求一次 Run。`02` 再确认 Agent 能使用哪个 Runtime。普通 offline
+Runtime 可以留下可等待的 Run，缺少 Runtime 或不可修复状态在执行前拒绝。`03` 转到
+系统任务 Scheduler，学习 claim、lease 和终态写入。`04` 沿 Agent Run 的结果和 Issue
+唤醒记录继续，决定重试、阻塞或审核。
 
 ## 不变量
 

@@ -1,10 +1,12 @@
 # Scheduler / Lease：领域流
 
 ```text
-ready job → tryClaim → running(lease token, heartbeat_at, stale_after)
-  → heartbeat repeatedly
-  → done/failed only with current token
-  → stale_after passed → stale steal with new token
+due plan → tryClaim → RUNNING(lease token, heartbeat_at, stale_after)
+  ├─ heartbeat → renew stale_after
+  ├─ finish with current token → SUCCESS / FAILED
+  ├─ stale + reentry allowed + attempts remain → RUNNING with new token
+  └─ stale sweep → FAILED
+FAILED + retry due + attempts remain → RUNNING with new token
 ```
 
-Lease 是运行权限的时间边界，heartbeat 是持有者续期事实，terminal update 是受 token 围栏保护的写入。
+`stale_after` 提供接管时间边界。当前 token 决定哪次尝试可以续期或提交终态。

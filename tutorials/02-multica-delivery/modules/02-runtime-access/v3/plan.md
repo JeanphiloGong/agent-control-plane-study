@@ -14,4 +14,4 @@ v2 已经得到 access 和 readiness verdict。v3 增加一个注入式 `RunnerA
 
 ## 验收与交接
 
-累计 `go test ./...` 通过。下一个 `03 Scheduler / Lease` 模块可以消费 `Started` 或 `Deferred` 结果，再加入 claim、lease token 和 heartbeat。
+累计 `go test ./...` 通过。下一模块从已注册系统任务的到期计划进入 claim、lease token 和 heartbeat。 [03 Scheduler / Lease](../../03-scheduler/V0-design.md)

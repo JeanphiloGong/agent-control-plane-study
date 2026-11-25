@@ -1,5 +1,7 @@
 # Multica Scheduler / Lease V0
 
+[模块路线图](plan.md)
+
 ## 版本与范围
 
 - **源码**：`server/internal/scheduler/db_ops.go`、`manager.go`、`stale_steal_test.go`
@@ -9,13 +11,14 @@
 ## 真实流程
 
 ```text
-Manager.RunOnce → tryClaim(db clock)
-  → runClaimed(lease token)
-  → runHeartbeats / heartbeat
-  → finishSuccess or finishFailure(token)
+Manager.RunOnce → dbNow → runJob → plansForTick
+  → processPlan → tryClaim(job, scope, planTime)
+  → runClaimed(executionID, leaseToken)
+       ├─ handler + runHeartbeats
+       └─ finishSuccess / finishFailure
 ```
 
-如果 heartbeat 停止，`stale_after` 到期，另一个 runner 可以接管并取得新 token。旧 runner 后续调用 `finishSuccess` 必须返回 `ErrLeaseLost`，不能覆盖胜者。
+`cmd/server/main.go` 在启动时注册系统任务。`Manager.RunOnce` 使用数据库时间为每个 job 计算到期计划。若 `RUNNING` 行已超过 `stale_after`，且该 job 允许接管并有剩余尝试，另一个 runner 可以在同一行上领取新 token。旧 runner 后续提交时会得到 `ErrLeaseLost`。
 
 ## 源码对应
 
@@ -27,19 +30,19 @@ Manager.RunOnce → tryClaim(db clock)
 
 ## 前置、产出与交接
 
-- **前置**：[`01-issue-invocation`](../01-issue-invocation/V0-design.md) 的 Run identity 和 [`02-runtime-access`](../02-runtime-access/V0-design.md) 的 Runtime start boundary。
-- **V1 产出**：单 worker 的 claim 和 terminal update；后续版本补充 lease token、heartbeat 和 stale steal。
-- **下游**：[`04-failure-review`](../04-failure-review/V0-design.md) 消费 terminal result、lease loss 和 retryable error 分类。
-- **冻结条件**：同一 job 只能被一个 owner claim，失去 lease 的旧 runner 不能写入终态。
+- 学习顺序接在 Issue Invocation 与 Runtime Access 之后。代码从已算好的系统任务计划开始。 [Issue Invocation](../01-issue-invocation/V0-design.md) · [Runtime Access](../02-runtime-access/V0-design.md)
+- V1 先实现竞争领取和受 token 保护的终态写入。V2 增加心跳，V3 增加重新领取。
+- 后续模块继续讲 Agent Run 的失败分类、唤醒和审核。 [Failure / Review](../04-failure-review/V0-design.md)
+- 同一计划同时只有一个当前持有者。失去 lease 后，旧 token 的终态更新影响零行。
 
 ## 局部版本线
 
-- V1：单 worker claim 和 terminal update。
-- V2：lease token 与 heartbeat。
-- V3：stale steal、失败重试和并发竞争。
+- V1 实现竞争领取、plan 唯一键和终态更新。
+- V2 实现带 token 的心跳续期。
+- V3 实现过期接管和失败重试。
 
 ## V1 检查
 
-两个 worker 竞争同一 job，只能一个获得 claim。让 owner 停止 heartbeat，第二个 worker 接管，再用旧 token finish，断言 `ErrLeaseLost`。
+两个 worker 竞争同一计划，只有一个获得 claim。用错误 token 尝试终态写入，断言 `ErrLeaseLost`。让心跳过期后再接管的场景在 V3 验收。
 
-契约见 `contracts/`，参考架构见 `reference-architecture.md`。
+[领域流](contracts/domain-flow.md) · [存储契约](contracts/interface-or-storage.md) · [状态与错误](contracts/state-and-errors.md) · [参考架构](reference-architecture.md)

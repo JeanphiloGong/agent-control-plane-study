@@ -143,4 +143,4 @@ go test ./...
 
 ## 检查点与下一模块
 
-Runtime Access v3 已经把 Runtime record、access policy、readiness 和 runner adapter 串成一条可观察路径。下一个 [03 Scheduler / Lease](../../03-scheduler/V0-design.md) 模块消费 `Started`/`Deferred` 的 Run 请求，负责 claim、heartbeat、stale steal 和旧 owner 终态写入围栏。
+Runtime Access v3 已经把 Runtime record、access policy、readiness 和 runner adapter 串成一条可观察路径。下一模块会追踪 Multica 怎样领取系统任务的到期计划，以及 runner 如何续期、接管和提交终态。 [03 Scheduler / Lease](../../03-scheduler/V0-design.md)
