@@ -1,6 +1,6 @@
 # Module Dependency Map
 
-这张图定义五条产品教程线的学习和实现交接。箭头表示下游模块依赖上游模块已经
+这张图定义六条产品教程线的学习和实现交接。箭头表示下游模块依赖上游模块已经
 冻结的事实或契约。产品线之间没有共享实现状态，产品编号只提供推荐阅读顺序。
 
 ## Herdr
@@ -88,6 +88,23 @@
 | `03-daemon-credentials` | `01-identity-workspace` capability scope and `02-channel-task` task identity | Machine process lifecycle and scoped credential request | Evidence/context projection |
 | `04-memory-evidence-sync` | `02-channel-task` visibility and `03-daemon-credentials` activity boundary | Evidence receipt, context view and cursor-based sync | R1 collaboration flow |
 
+## Orca
+
+```text
+01 Worktree / Workspace
+  → 02 Orchestration / Worker
+  → 03 Session / Recovery
+  → 04 Review / Remote
+  → O1 product integration
+```
+
+| Module | Prerequisites | V1 output | Downstream use |
+| --- | --- | --- | --- |
+| `01-worktree-lifecycle` | None | Project-bound worktree identity, status and safe cleanup candidate | Worker dispatch workspace |
+| `02-orchestration-worker` | `01-worktree-lifecycle` worktree identity | Coordinator Task, Dispatch receipt and worker settlement | Session and recovery decisions |
+| `03-session-recovery` | `02-orchestration-worker` dispatch state | Worker liveness, lost/stop/retry decision and preservation boundary | Review and cleanup gate |
+| `04-review-remote` | `03-session-recovery` result and preservation state | Review input, remote host handoff and cleanup verdict | O1 worktree-to-review flow |
+
 ## Version Rule
 
 每个模块按自己的版本线推进：
@@ -100,6 +117,7 @@ V0 design and contracts
   → product integration gate
 ```
 
-当前仓库已经完成全部模块的 V0 设计、契约和参考架构。V1 仍按上表从每条产品线的
+当前仓库已经完成既有产品模块的 V0 设计、契约和参考架构。Orca 已完成产品入口和模块
+路线图，模块 V0 设计待构建。V1 仍按上表从每条产品线的
 第一个模块开始构建。V0 文档中的 V1 检查是实现验收条件，不代表当前已经存在可运行
 的参考实现。

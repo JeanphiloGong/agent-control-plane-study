@@ -6,7 +6,7 @@
 权限、沙箱、重试、持久化和多 Agent 基础；本系列继续研究真实产品如何把这些能力
 组织成一个可使用的控制面。
 
-本系列不重新实现五个产品，也不把它们接入 `social-media`。五个 `sources/` 仓库是
+本系列不重新实现六个产品，也不把它们接入 `social-media`。六个 `sources/` 仓库是
 只读的源码依据；`tutorials/` 只写架构设计、版本教程和小范围可运行参考实现。
 参考实现学习行为和边界，不复制上游源代码、品牌或受许可限制的实现。
 
@@ -21,13 +21,14 @@
 | `lody-acp-workspace` | [`sources/lody`](sources/lody) | `main` / `762dee0431ecae0649b9fab13a1f357b096d0ac` | `apps/cli/src/agent`、`apps/cli/src/session`、`apps/cli/src/orchestration`、`packages/shared/src/session-*`、`packages/e2ee-core` |
 | `multica-issue-orchestration` | [`sources/multica`](sources/multica) | `main` / `4ceffd536603c67620c7460f6c412dcbf092299e` | `server/internal/service`、`server/internal/scheduler`、`server/internal/runtimeapps`、`packages/core` |
 | `herdr-agent-runtime` | [`sources/herdr`](sources/herdr) | `master` / `e8d7d9705a7a2c89cef4dd42079379f05685af87` | `src/main.rs`、`src/server`、`src/client`、`src/pane`、`src/persist`、`src/remote` |
+| `orca-agent-orchestration` | [`sources/orca`](sources/orca) | `main` / `27300a14e0170258814b67b2f4159446c637f551` | `src/cli/orchestration`、`src/cli/workspaces`、`src/cli/dispatch`、`src/shared/workspace-cleanup`、`skill-guides/orchestration.md` |
 
 源码事实已经足以确认模块边界，但每个模块进入 V0 时仍要重新核对该提交中的
 具体调用链和测试；不能把 README 的宣传语当成实现证据。
 
 ## 规划层次
 
-五个产品各自是一条独立教程线。每条线内部再拆成多个有明确业务责任的模块，模块
+六个产品各自是一条独立教程线。每条线内部再拆成多个有明确业务责任的模块，模块
 拥有自己的 `V0 → Vn`。产品级版本只表示一组模块已经可以连成一条可观察的核心链路，
 不是把整个产品压缩成几层功能。
 
@@ -179,7 +180,7 @@ V0 的源码对应表至少包含以下字段：
 
 集成门另有自己的检查和版本号，不能把某个模块的 V2 直接称为产品 V2。
 
-## 五条教程线各自研究什么
+## 六条教程线各自研究什么
 
 ### Herdr：Agent 进程运行时
 
@@ -308,7 +309,7 @@ API、Realtime、持久化和集成；Daemon 在机器上运行 Agent 并代理�
   → Vn 该模块的产品特有能力
 ```
 
-这不是五个产品共享的固定六步。每个模块选择实际需要的版本。`versions` 中的
+这不是六个产品共享的固定六步。每个模块选择实际需要的版本。`versions` 中的
 产品版本只表示集成路线，具体模块版本必须写在对应模块的 `V0-design.md` 中。
 产品级的 `H1`、`M1`、
 `T1`、`L1`、`R1` 只在相关模块达到集成条件后出现。
@@ -344,9 +345,30 @@ API、Realtime、持久化和集成；Daemon 在机器上运行 Agent 并代理�
 这个顺序不是产品优劣排序，而是从运行时基础到业务控制面，再到多机器和协作空间，
 减少重复学习。
 
-## 当前版本和下一步
+### Orca：Agent 工作编排与隔离工作区
 
-五条教程线的 V0 初始化已完成。每条线都有一个产品总览，以及四个模块各自的
+| 模块 | 真实源码入口 | V0 参考架构 | V0 要解释的状态流 |
+| --- | --- | --- | --- |
+| Worktree / Workspace | `src/cli/workspaces/worktree.ts`、`src/cli/workspaces/workspace-cleanup.ts`、`src/shared/folder-workspaces/*` | Workspace、Worktree、CleanupCandidate、RemovalVerdict | 目标选择 → 独立工作树 → 状态检查 → 保留或清理 |
+| Orchestration / Worker | `src/cli/orchestration/orchestration-handlers.ts`、`src/cli/specs/orchestration.ts`、`skill-guides/orchestration.md` | Run、Task、Dispatch、Worker、Receipt | coordinator → worker dispatch → worker result → task settlement |
+| Session / Recovery | `src/cli/runtime/session-tool-caller.ts`、`src/cli/workspaces/worktree-setup-decision-recovery.ts`、`skill-guides/references/recovery-and-cleanup.md` | Session、WorkerState、RecoveryDecision、Fence | worker running → stopped/lost → inspect → steer、retry 或 preserve |
+| Review / Remote | `src/cli/hosts/*`、`src/cli/workspaces/worktree-review-link-flags.ts`、`src/renderer/src/store/hosted-review/*` | ExecutionHost、ReviewLink、Diff、MergeBoundary | 本地或远程执行 → 检查 → review/PR → 人工合并 |
+
+Orca 的专题重点是外部 Agent 工作编排。它拥有 worktree、dispatch、worker session 和
+cleanup 事实，不拥有 Multica 的 Issue、Run 或 Scheduler lease。Orca 的 worker 结果可以
+作为上层控制面的输入，但不能直接改写 Multica 的任务终态。
+
+版本路线：
+
+- **V0 设计**：Workspace、Worktree、Coordinator、Task、Dispatch、Worker、Session、Review 和 Cleanup 的所有权与恢复边界。
+- **V1 Worktree 生命周期**：创建、绑定、检查和保留一个独立工作树。
+- **V2 Worker Dispatch**：coordinator 创建任务并启动 worker，读取 receipt，区分创建、session ready 和 turn started。
+- **V3 Recovery / Review**：处理 worker lost、失败、停止、重试、人工 review 和 cleanup，未完成工作默认保留。
+- **V4 Remote Execution**：把执行主机、远程 endpoint 和 worktree 绑定起来，验证远程断线不被误判为任务完成。
+
+### 当前版本和下一步
+
+五条既有教程线的 V0 初始化已完成。Orca 已加入源码和产品总览，模块 V0 设计仍待构建。每条已完成的产品线都有一个产品总览，以及四个模块各自的
 `V0-design.md`、三份契约和 `reference-architecture.md`。源码映射固定在各自的
 基线提交，验收包含源码符号、数据流、错误边界和参考架构静态检查，不把设计文档
 当成可运行产品。
@@ -358,7 +380,7 @@ API、Realtime、持久化和集成；Daemon 在机器上运行 Agent 并代理�
 
 - 不建立 `framework-tutorials/`；
 - 不建立单独的 `comparisons/` 目录；
-- 不把五个产品接入 `social-media`；
+- 不把六个产品接入 `social-media`；
 - 不复制产品源码或绕过许可证；
 - 不在没有确定边界前克隆完整产品功能；
 - 不把外部控制面的状态当成 `social-task-queue` 的事实来源。
