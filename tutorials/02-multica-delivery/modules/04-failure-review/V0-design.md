@@ -1,47 +1,49 @@
 # Multica Failure / Review V0
 
+[模块路线图](plan.md) · [参考架构](reference-architecture.md)
+
 ## 版本与范围
 
-- **源码**：`server/pkg/taskfailure/*`、`server/internal/service/retry_*`、`issue_wakeup*.go`、`packages/core/issues/*`
-- **目标**：把 Run 结果分类为失败、可重试、需等待或需审核，并回到 Issue projection。
-- **排除**：完整 Squad 编排、所有外部渠道。
+- 源码：server/pkg/taskfailure/*、server/internal/service/task.go、issue_wakeup*.go、packages/core/issues/*
+- 目标：把 Run 结果分类为失败、可重试、需等待或需审核，并回到 Issue projection。
+- 排除：完整 Squad 编排、所有外部渠道。
 
 ## 真实流程
 
-```text
-Run result/error → taskfailure classifier
-  → retry policy / issue wakeup
-  → requeue or blocked/review state
-  → packages/core issue projection
-```
+~~~text
+Run terminal result
+  → TaskService.FailTask / completed task
+  → taskfailure.Classify
+  → retryableReasons / CreateRetryTask
+  → IssueWakeupService.Tick
+  → task / Issue projection
+~~~
 
-`IssueWakeupService` 还会检查条件、截止时间和 claim authority。重试不是简单复制一条 Task，必须保留原 Issue、workflow step 和交接 brief。
+FailTask 负责任务终态、失败原因、retry child 和聊天失败结果。它不直接把 Issue 改成 shipped。IssueWakeupService 负责规则条件、到期时间、权限和 receipt 去重。客户端投影读取服务端结果，不重新判断 retryability。
 
 ## 源码对应
 
 | 路径 | 符号/责任 |
 | --- | --- |
-| `server/pkg/taskfailure/*` | 错误类别、失败原因和 retryability |
-| `server/internal/service/retry_*` | 重新创建/延迟 Run 的服务边界 |
-| `server/internal/service/issue_wakeup.go` | `IssueWakeupService`、`Validate`、`Tick`、`dispatch` |
-| `server/internal/service/issue_wakeup_manage.go` | wakeup trigger、check-in 和关闭/删除 |
-| `packages/core/issues/*` | Issue 查询和实时 projection |
+| server/pkg/taskfailure/failure.go | 稳定 Reason 值、IsAgentError、AllReasons |
+| server/pkg/taskfailure/classify.go | Classify、NormalizeDaemonReason、ResumeUnsafeFailure |
+| server/internal/service/task.go | FailTask、retryableReasons、retryAttemptCeiling、retryDelayForAttempt、MaybeRetryFailedTask |
+| server/internal/service/issue_wakeup.go | IssueWakeupService.Tick、dispatchFromTick |
+| server/internal/service/issue_wakeup_condition.go | 条件评估与 condition.met 事件 |
+| packages/core/issues/run-steering.ts | Run 状态的客户端行为投影 |
+| packages/core/issues/config/status.ts | in_review、blocked 等状态词 |
 
 ## 前置、产出与交接
 
-- **前置**：[`03-scheduler`](../03-scheduler/V0-design.md) 的 terminal result、lease outcome 和 Run 状态。
-- **V1 产出**：一次 Run 的失败分类、retry/review 决策和 Issue projection。
-- **下游**：M1 使用 Issue、Runtime、Scheduler 和 Review Gate 的完整交接，不再把 `Run done` 当成 `shipped`。
-- **冻结条件**：lease 丢失、Runtime 不可用、Agent 失败和需要人工处理的结果保持不同状态。
-
-## 局部版本线
-
-- V1：Run failure 分类和 Review Gate。
-- V2：有限重试、延迟和 Issue wakeup。
-- V3：客户端 projection、workflow handoff 和自动唤醒门禁。
+- 前置：03 Scheduler 的 terminal result 和 lease outcome。
+- V1 产出：稳定失败分类与 Review Gate 决策。
+- V2 产出：有限 retry child，保留 Issue/workflow handoff。
+- V3 产出：Issue Wakeup 条件去重和客户端状态投影。
+- 下游：M1 继续处理完整 Review 操作和交付审核。
+- 冻结条件：Retryable、ReviewRequired 和 Issue status 是三个独立事实；成功 Run 不能自动成为 shipped。
 
 ## V1 检查
 
-对 provider network、lease lost、用户拒绝和真实业务失败分别分类。只有允许重试的类别进入 retry policy，Run done 不直接成为 Review approved。
+provider network 进入可重试决策，权限错误进入 blocked/review，业务失败不自动重试，成功进入 in_review。
 
-契约见 `contracts/`，参考架构见 `reference-architecture.md`。
+实现正文从 v1/failure-review.md 开始。
