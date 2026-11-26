@@ -54,4 +54,4 @@ Runtime 可以留下可等待的 Run，缺少 Runtime 或不可修复状态在�
 
 ## 集成门 M1
 
-学习实现需要完成一次带 lease 的 Run，并把结果回写 Issue 后进入 Review。必须检查竞争领取、失去 lease 的旧写入和 Review Gate 拒绝路径。真实 PostgreSQL、完整看板和外部 Git 渠道留到后续版本。
+学习实现需要完成一次带 lease 的 Run，并把结果回写 Issue 后进入 Review。必须检查竞争领取、失去 lease 的旧写入和 Review Gate 拒绝路径。真实 PostgreSQL、完整看板和外部 Git 渠道留到后续版本。 [M1 集成正文](M1-integration.md) · [M1 计划](M1-plan.md)
