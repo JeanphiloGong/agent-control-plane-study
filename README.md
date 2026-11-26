@@ -5,7 +5,7 @@
 
 公共教程规划见 [plan.md](plan.md)。
 
-平台内核与默认应用方案见 [plans/agent-kernel-platform.md](plans/agent-kernel-platform.md)。
+Workfolk Agent Kernel 的 canonical 方案见 [workfolk-tutorial](https://github.com/JeanphiloGong/workfolk-tutorial/blob/main/plans/agent-kernel-platform.md)。
 
 统一教程入口见 [tutorials/README.md](tutorials/README.md)。目录编号表示推荐学习顺序，
 产品目录内的模块编号表示该产品内部的学习顺序。`V0`、`V1` 等仍然是模块自己的版本，
