@@ -1,18 +1,18 @@
 [submodule "sources/t3code"]
 	path = sources/t3code
-	url = https://github.com/pingdotgg/t3code.git
+	url = https://github.com/JeanphiloGong/t3code.git
 [submodule "sources/raft-source"]
 	path = sources/raft-source
-	url = https://github.com/botiverse/raft-source.git
+	url = https://github.com/JeanphiloGong/raft-source.git
 [submodule "sources/lody"]
 	path = sources/lody
-	url = https://github.com/LodyAI/Lody.git
+	url = https://github.com/JeanphiloGong/Lody.git
 [submodule "sources/multica"]
 	path = sources/multica
-	url = https://github.com/multica-ai/multica.git
+	url = https://github.com/JeanphiloGong/multica.git
 [submodule "sources/herdr"]
 	path = sources/herdr
-	url = https://github.com/herdrdev/herdr.git
+	url = https://github.com/JeanphiloGong/herdr.git
 [submodule "sources/orca"]
 	path = sources/orca
-	url = https://github.com/stablyai/orca.git
+	url = https://github.com/JeanphiloGong/orca.git
