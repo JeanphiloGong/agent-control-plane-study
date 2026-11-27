@@ -8,10 +8,10 @@ Orca 是独立的 Agent 工作编排产品。它通过 worktree、worker session
 
 | 版本 | 前置 | 目标 | 实现正文 | 验收 |
 | --- | --- | --- | --- | --- |
-| v1 | V0 Worktree contract | 创建并绑定一个隔离 worktree | 待构建 | worktree 路径、项目和 owner 一致 |
-| v2 | v1 worktree | 创建 coordinator Task、启动 worker 并读取 receipt | 待构建 | 创建、session ready、turn started 可区分 |
-| v3 | v2 dispatch | 处理 worker lost、停止、重试和未完成工作保留 | 待构建 | 未知状态不触发破坏性 cleanup |
-| v4 | v3 recovery | 连接 review、远程 host 和 cleanup 门禁 | 待构建 | review 输入完整，远程断线不会伪造完成 |
+| v1 | V0 Worktree contract | 创建并绑定一个隔离 worktree | [Worktree v1](modules/01-worktree-lifecycle/v1/create-worktree.md) | worktree 路径、项目和 owner 一致 |
+| v2 | v1 worktree | 创建 coordinator Task、启动 worker 并读取 receipt | [Worker v1–v3](modules/02-orchestration-worker/v1/dispatch-worker.md) | 创建、session ready、turn started 可区分 |
+| v3 | v2 dispatch | 处理 worker lost、停止、重试和未完成工作保留 | [Recovery v1–v3](modules/03-session-recovery/v1/observe-session.md) | 未知状态不触发破坏性 cleanup |
+| v4 | v3 recovery | 连接 review、远程 host 和 cleanup 门禁 | [Review v1–v3](modules/04-review-remote/v1/review-evidence.md) | review 输入完整，远程断线不会伪造完成 |
 
 ## 真实调用链
 
@@ -44,5 +44,5 @@ orca worktree / project selection
 ## V1–V4 构建顺序
 
 每一版都从同一 Orca 基线提取一个最小状态流，使用独立参考实现验证，再对照真实
-TypeScript/CLI 符号。V1 先冻结工作区身份，V2 冻结 dispatch receipt，V3 冻结恢复和
-cleanup 保护，V4 冻结 review 与 remote handoff。
+TypeScript/CLI 符号。实现正文按模块目录继续细分为 v1–v3。四个模块最后通过
+[O1 集成正文](O1-integration.md) 连接为一次完整的 retry、review 和 preserve 流程。

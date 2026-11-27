@@ -351,8 +351,8 @@ API、Realtime、持久化和集成；Daemon 在机器上运行 Agent 并代理�
 | --- | --- | --- | --- |
 | Worktree / Workspace | `src/cli/workspaces/worktree.ts`、`src/cli/workspaces/workspace-cleanup.ts`、`src/shared/folder-workspaces/*` | Workspace、Worktree、CleanupCandidate、RemovalVerdict | 目标选择 → 独立工作树 → 状态检查 → 保留或清理 |
 | Orchestration / Worker | `src/cli/orchestration/orchestration-handlers.ts`、`src/cli/specs/orchestration.ts`、`skill-guides/orchestration.md` | Run、Task、Dispatch、Worker、Receipt | coordinator → worker dispatch → worker result → task settlement |
-| Session / Recovery | `src/cli/runtime/session-tool-caller.ts`、`src/cli/workspaces/worktree-setup-decision-recovery.ts`、`skill-guides/references/recovery-and-cleanup.md` | Session、WorkerState、RecoveryDecision、Fence | worker running → stopped/lost → inspect → steer、retry 或 preserve |
-| Review / Remote | `src/cli/hosts/*`、`src/cli/workspaces/worktree-review-link-flags.ts`、`src/renderer/src/store/hosted-review/*` | ExecutionHost、ReviewLink、Diff、MergeBoundary | 本地或远程执行 → 检查 → review/PR → 人工合并 |
+| Session / Recovery | `src/main/runtime/orchestration/workers/lifecycle/session-worker-liveness.ts`、`src/cli/orchestration/recovery/orchestration-recovery-command.ts`、`skill-guides/orchestration/references/recovery-and-cleanup.md` | Session、WorkerState、RecoveryDecision、Fence | worker running → stopped/lost → inspect → steer、retry 或 preserve |
+| Review / Remote | `src/cli/hosts/*`、`src/cli/workspaces/worktree-review-link-flags.ts`、`src/renderer/src/store/slices/hosted-review/*` | ExecutionHost、ReviewLink、Diff、MergeBoundary | 本地或远程执行 → 检查 → review/PR → 人工合并 |
 
 Orca 的专题重点是外部 Agent 工作编排。它拥有 worktree、dispatch、worker session 和
 cleanup 事实，不拥有 Multica 的 Issue、Run 或 Scheduler lease。Orca 的 worker 结果可以
@@ -368,10 +368,10 @@ cleanup 事实，不拥有 Multica 的 Issue、Run 或 Scheduler lease。Orca �
 
 ### 当前版本和下一步
 
-五条既有教程线的 V0 初始化已完成。Orca 已加入源码和产品总览，模块 V0 设计仍待构建。每条已完成的产品线都有一个产品总览，以及四个模块各自的
-`V0-design.md`、三份契约和 `reference-architecture.md`。源码映射固定在各自的
-基线提交，验收包含源码符号、数据流、错误边界和参考架构静态检查，不把设计文档
-当成可运行产品。
+六条教程线的产品入口和模块地图已完成。Orca 的四个模块现在也有各自的
+`V0-design.md`、三份契约、`reference-architecture.md` 和 V1–V3 独立参考实现，O1
+集成正文连接了 Worktree、Dispatch、Recovery 和 Review。源码映射固定在各自的基线提交，
+验收包含源码符号、数据流、错误边界和参考架构 replay，不把参考实现当成生产产品。
 
 第一篇实现正文从 Herdr 的连接生命周期开始。后续模块沿用各自的 V0 契约，在达到集成条件后验证跨模块交接。
 [Herdr 路线图](tutorials/01-herdr-runtime/plan.md)
